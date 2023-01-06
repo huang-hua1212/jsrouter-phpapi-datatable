@@ -8,7 +8,7 @@ include 'src/Steampixel/Route.php';
 
 // Define a global basepath
 // define('BASEPATH','/');
-define('BASEPATH','/MAMP/projects/simplePHPRouter/index.php/');
+define('BASEPATH','/MAMP/projects/simplePHPRouter/router.php/');
 
 
 // If your script lives in a subfolder you can use the following example
@@ -93,15 +93,16 @@ Route::add('/phpinfo', function() {
 
 // Get route example
 Route::add('/contact-form', function() {
-  // navi();
+  navi();
   echo '<form method="post"><input type="text" name="test"><input type="submit" value="send"></form>';
 }, 'get');
 
 // Post route example
 Route::add('/contact-form', function() {
-  navi();
+  // navi();
   echo 'Hey! The form has been sent:<br>';
   print_r($_POST);
+
 }, 'post');
 
 // Get and Post route example
@@ -238,6 +239,76 @@ Route::add('/known-routes', function() {
   }
   echo '</ul>';
 });
+
+
+Route::add('/mysql/data1', function() {
+
+
+  
+  //// PDO WITH MYSQL version1
+  // $dbconnect = "mysql:host=localhost;dbname=test_db;port=8889";
+  // $connect = new PDO($dbconnect, 'root', 'root');
+  // $query = 'SELECT * from course';
+  // $result = $connect->query($query);
+  // // print_r($result); //此時不會顯示出值
+  // $data = array();
+  // foreach($result as $row)
+  // {
+  //     print_r($row); //此時才會顯示出值
+  //   $sub_array = array();
+  //   // $sub_array[] = $row['customer_id'];
+  //   // $sub_array[] = $row['customer_first_name'];
+  //   // $sub_array[] = $row['customer_last_name'];
+  //   // $sub_array[] = $row['customer_email'];
+  //   // $sub_array[] = $row['customer_gender'];
+  //   $data[] = $sub_array;
+  // }
+  
+
+
+
+  // // mysqli version1
+  // $user = 'root';
+  // $password = 'root';
+  // $db = 'test_db';
+  // $host = 'localhost';
+  // $port = 8889;
+  // $link = mysqli_init();
+  // $success = mysqli_real_connect(
+  //    $link,
+  //    $host,
+  //    $user,
+  //    $password,
+  //    $db,
+  //    $port
+  // );
+  // $query = "SELECT * from course";
+  // try{
+
+  //   $res = mysqli_query( $link , $query);
+  //   if (!mysqli_query($link, $sql)) {
+  //     die('Error: ' . mysqli_error($link));
+  //   }
+  //   $rows = mysqli_fetch_all($res,MYSQLI_ASSOC);
+  // print_r($rows);
+  // }catch (Exception $e) {
+  //   print_r($e);
+  // }
+  
+
+
+
+  // $connection = mysqli_connet($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME, $DB_NAME, $DB_PORT);
+  // $query = 'SELECT * from course';
+  // // $result = mysqli_query($connection, $query);
+  // // $data = mysqli_fetch_array($result);
+  // // var_dump($data);
+  // $result = $mysqli -> query($sql);
+  // $result -> fetch_all(MYSQLI_ASSOC);
+  // print_r($result);
+ 
+});
+
 
 // Run the Router with the given Basepath
 Route::run(BASEPATH);

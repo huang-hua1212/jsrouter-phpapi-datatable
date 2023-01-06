@@ -5,29 +5,27 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <script
-  src="https://code.jquery.com/jquery-2.2.4.min.js"
-  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
-  crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+    integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
   <title>
   </title>
 </head>
+
 <body>
-<div id='app'></div>
-<!-- template TESTing -->
-<!-- <template-test></template-test> -->
+  <div id='app'></div>
 </body>
-<script type = 'module'>
-    $.ajax('index.php/contact-form',   // request url
+<script type='module'>
+  $.ajax('router.php/contact-form',   // request url
     {
-        success: function (data, status, xhr) {// success callback function
-            console.log(data);
-    }
-});
-  // import RoutingRouter from '../lib/router/history-routing.js';
-//   import RoutingRouter from './lib/router/history-routing.js';
-  
-//   window.customElements.define('template-test', RoutingRouter);
+      success: function (data, status, xhr) {// success callback function
+        console.log(data);
+      }
+    });
+
+  $.post('router.php/contact-form', { 'data': 'post-data' }, (result) => {
+    console.log(result);
+  });
 
 </script>
+
 </html>

@@ -21,6 +21,7 @@ class Route {
       'function' => $function,
       'method' => $method
     ));
+    // print_r(self::$routes);
   }
 
   public static function getAll(){
@@ -85,15 +86,6 @@ class Route {
 
       // Add 'find string end' automatically
       $route['expression'] = $route['expression'].'$';
-
-      // print_r($matches);
-      // print($path);
-      // print('<br>');
-      // print('#'.$route['expression'].'#'.($case_matters ? '' : 'i').'u');
-      // print('<br>');
-      // print(preg_match('#'.$route['expression'].'#'.($case_matters ? '' : 'i').'u', $path, $matches));
-      // print('<br>');
-
 
       // Check path match
       if (preg_match('#'.$route['expression'].'#'.($case_matters ? '' : 'i').'u', $path, $matches)) {
