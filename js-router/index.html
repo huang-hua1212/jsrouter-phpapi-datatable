@@ -1,0 +1,61 @@
+<input type="text" id="demo" name="">
+<div id="show"></div>
+
+<input type="text" id="demo1" name="">
+<div id="show1"></div>
+<script>
+    const oInput = document.getElementById("demo");
+    const oDiv = document.getElementById("show");
+
+
+    let oData = {
+        name:"duyi",
+        valueObj:{
+            value:"aaa"
+        }
+    }
+    function upData(){
+        oDiv.innerText = oData.name;
+    }
+    upData();
+    oInput.oninput = function(){
+        proData.name = this.value;
+    }
+    let proData = new Proxy(oData,{
+        set(target,key,value,receiver){
+            Reflect.set(target,key,value);
+            upData();
+        },
+        get(target,key,receiver){
+            return Reflect.get(target,key);
+        }
+    });
+
+
+    //
+    let oData1 = {
+        name:"duyi",
+        valueObj:{
+            value:"aaa"
+        }
+    }
+    const oInput1 = document.getElementById("demo1");
+    const oDiv1 = document.getElementById("show1");
+    function upData1(){
+        oDiv1.innerText = oData1.valueObj.value;
+    }
+    upData1();
+    oInput1.oninput = function(){
+        console.log(proData1);
+        proData1.value = this.value;
+    }
+    let proData1 = new Proxy(oData1.valueObj,{
+        set(target,key,value,receiver){
+            Reflect.set(target,key,value);
+            upData1();
+        },
+        get(target,key,receiver){
+            return Reflect.get(target,key);
+        }
+    });
+</script>

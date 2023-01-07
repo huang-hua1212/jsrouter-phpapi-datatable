@@ -267,33 +267,50 @@ Route::add('/mysql/data1', function() {
 
 
 
-  // // mysqli version1
-  // $user = 'root';
-  // $password = 'root';
-  // $db = 'test_db';
-  // $host = 'localhost';
-  // $port = 8889;
-  // $link = mysqli_init();
-  // $success = mysqli_real_connect(
-  //    $link,
-  //    $host,
-  //    $user,
-  //    $password,
-  //    $db,
-  //    $port
-  // );
-  // $query = "SELECT * from course";
-  // try{
+  // mysqli version1
+  $user = 'root';
+  $password = 'root';
+  $db = 'test_db';
+  $host = 'localhost';
+  $port = 8889;
+  $link = mysqli_init();
+  $success = mysqli_real_connect(
+     $link,
+     $host,
+     $user,
+     $password,
+     $db,
+     $port
+  );
+  $query = "SELECT * from course";
+  try{
 
-  //   $res = mysqli_query( $link , $query);
-  //   if (!mysqli_query($link, $sql)) {
-  //     die('Error: ' . mysqli_error($link));
-  //   }
-  //   $rows = mysqli_fetch_all($res,MYSQLI_ASSOC);
-  // print_r($rows);
-  // }catch (Exception $e) {
-  //   print_r($e);
-  // }
+    $res = mysqli_query( $link , $query);
+    // if (!mysqli_query($link, $sql)) {
+    //   die('Error: ' . mysqli_error($link));
+    // }
+    $rows = mysqli_fetch_all($res,MYSQLI_ASSOC);
+    // print_r($rows);
+    $n = 0;
+    // print_r($rows);
+    // for($i = 0; $i< count($rows); $i++) {
+    //   $rows[i]['id'] = $n;
+    //   $n++;
+    // }
+
+      $res = array(
+        'length'=> count($rows),
+        'data'=> $rows,
+      );
+
+
+
+    // echo json_encode($rows);
+    echo json_encode($res);
+
+  }catch (Exception $e) {
+    print($e);
+  }
   
 
 
@@ -307,7 +324,7 @@ Route::add('/mysql/data1', function() {
   // $result -> fetch_all(MYSQLI_ASSOC);
   // print_r($result);
  
-});
+}, ['get','post']);
 
 
 // Run the Router with the given Basepath
