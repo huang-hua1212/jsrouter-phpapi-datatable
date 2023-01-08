@@ -59,6 +59,8 @@
 									<th>Credits</th>
 									<th>DepartmentID</th>
 									<th>CreatedON</th>
+                  <th></th>
+                  <th></th>
 
 								</tr>
 							</thead>
@@ -126,13 +128,26 @@
           // },
         },
         // IF type from data which API(from php) send is Object，必須加上這個
-        "columns": [ //列的標題一般是從DOM中讀取（你還可以使用這個屬性為表格創建列標題)
+        columns: [ //列的標題一般是從DOM中讀取（你還可以使用這個屬性為表格創建列標題)
           { data: 'CourseID' },
           { data: 'Title'},
           { data: 'Credits' },
           { data: 'DepartmentID' },
           { data: 'CreatedON' },
+          { 
+            data: 'CourseID',
+            render: function ( data, type, row ) {
+              return '<!-- Button trigger modal --><button onClick = "triggerModal('+data+')" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Launch demo modal</button>';
+            }
+          }
         ],
+        columnDefs: [{ // 事後增加按鈕或值
+                //   指定第四列，从0开始，0表示第一列，1表示第二列……
+                "targets": 6,
+                "render": function(data, type, row, meta) {
+                    return '<input type="checkbox" name="checklist" />'
+                }
+            }],
         drawCallback : function(settings){
           var page_info = dataTable.page.info();
 
@@ -158,6 +173,7 @@
 
           $('#pagelist').val(page_info.page);
         },
+       
         
       });
 	}
@@ -180,5 +196,12 @@
 
   });
 
+
+  // click function需用window.[func] 定義
+  window.triggerModal = function (courseId) {
+    console.log(courseId);
+  }
+
+  
 </script>
 </html>
