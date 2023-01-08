@@ -110,19 +110,28 @@
 		  var dataTable = $('#customer_table').DataTable({
         processing : true,
         serverSide : true,
-        // retrieve: true,
+        order : [],
+        retrieve: true,
         ajax : {
           url:"http://localhost:8888/MAMP/projects/simplePHPRouter/router.php/mysql/data1",
           method:"POST",
-          // data:{start:start, length:length}
+          data:{start:start, length:length},
+          // 除錯用，若為了datatable正常顯示，需註解起來
+          // success: function (response) {
+          //   //這邊放 
+          //   console.log(response);
+          // },
+          // error:function(err){
+          //   console.log(err.responseText);
+          // },
         },
         // IF type from data which API(from php) send is Object，必須加上這個
         "columns": [ //列的標題一般是從DOM中讀取（你還可以使用這個屬性為表格創建列標題)
-        { data: 'CourseID' },
-        { data: 'Title'},
-        { data: 'Credits' },
-        { data: 'DepartmentID' },
-        { data: 'CreatedON' },
+          { data: 'CourseID' },
+          { data: 'Title'},
+          { data: 'Credits' },
+          { data: 'DepartmentID' },
+          { data: 'CreatedON' },
         ],
         drawCallback : function(settings){
           var page_info = dataTable.page.info();
@@ -135,6 +144,7 @@
 
           var length = page_info.length;
 
+          console.log( page_info);
           for(var count = 1; count <= page_info.pages; count++)
           {
           	var page_number = count - 1;
@@ -148,12 +158,7 @@
 
           $('#pagelist').val(page_info.page);
         },
-        success: function (response) {
-        //這邊放 
-        conosle.log(response);
-        },
-        error:function(err){
-        }
+        
       });
 	}
 
@@ -161,17 +166,17 @@
 
   $('#pagelist').change(function(){
 
-  var start = $('#pagelist').find(':selected').data('start');
+    var start = $('#pagelist').find(':selected').data('start');
 
-  var length = $('#pagelist').find(':selected').data('length');
+    var length = $('#pagelist').find(':selected').data('length');
 
-  load_data(start, length);
+    load_data(start, length);
 
-  var page_number = parseInt($('#pagelist').val());
+    var page_number = parseInt($('#pagelist').val());
 
-  var test_table = $('#customer_table').dataTable();
+    var test_table = $('#customer_table').dataTable();
 
-  test_table.fnPageChange(page_number);
+    test_table.fnPageChange(page_number);
 
   });
 

@@ -283,6 +283,15 @@ Route::add('/mysql/data1', function() {
      $port
   );
   $query = "SELECT * from course";
+
+  $allCount = countAllTableDataRows($link, $query);
+  // print($_POST['length']);
+  if($_POST['length'] != -1)
+  {
+    $query .= ' LIMIT ' . $_POST['start'] . ', ' . $_POST['length'];
+  }
+  
+
   try{
 
     $res = mysqli_query( $link , $query);
@@ -290,18 +299,19 @@ Route::add('/mysql/data1', function() {
     //   die('Error: ' . mysqli_error($link));
     // }
     $rows = mysqli_fetch_all($res,MYSQLI_ASSOC);
-    // print_r($rows);
     $n = 0;
-    // print_r($rows);
-    // for($i = 0; $i< count($rows); $i++) {
-    //   $rows[i]['id'] = $n;
-    //   $n++;
-    // }
+    
+    foreach($rows as &$row) {
+      $row['id'] = $n;
+      $n++;
+    }
 
-      $res = array(
-        'length'=> count($rows),
-        'data'=> $rows,
-      );
+    $res = array(
+      "draw"		=>	intval($_POST["draw"]),
+      "recordsTotal"	=>	$allCount,
+      "recordsFiltered"	=>	$allCount, // 每次表現幾行
+      'data'=> $rows,
+    );
 
 
 
@@ -325,6 +335,16 @@ Route::add('/mysql/data1', function() {
   // print_r($result);
  
 }, ['get','post']);
+
+
+
+function countAllTableDataRows($link, $query) {
+  $res = mysqli_query( $link , $query);
+  $rows = mysqli_fetch_all($res,MYSQLI_ASSOC);
+  $count = count($rows); 
+  return $count;
+
+}
 
 
 // Run the Router with the given Basepath
