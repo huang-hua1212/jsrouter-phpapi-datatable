@@ -26,9 +26,44 @@
   <input type='radio' name='check' value='B'><label>BB</label>
 </div>
 </div>
+
+
+<select id="select_id" style="width: 200px">
+<option value"1">Text 1</option>
+<option value"2">Text 2</option>
+<option value"3">Text 3</option>
+</select>
+
+<button id="referecedField">Change text of the selected option</button>
 </body>
 <script type = 'module'>
 
+
+var n = 0;
+$('#cluster').on('change', function(e, state) {
+  console.log($(this).val());
+  if(e.originalEvent === undefined) {
+    // console.log(n);
+      //  n++;
+        console.log('trigger from code');
+      
+        // $("#cluster").find("option:selected").text('New_Text').trigger('change');
+        // $("#cluster").find("option:selected").val('New_Text').trigger('change');
+        // $("#cluster").find("option:selected").html('New_Text').trigger('change');
+        $("#cluster").find("option:selected").text('New_Text');
+        $("#cluster").find("option:selected").val('New_Text');
+        $("#cluster").find("option:selected").html('New_Text');
+        return ;
+      }  
+  // if(typeof state!=='undefined' && state) {
+  //       console.log('trigger from code');
+  //       $("#cluster").find("option:selected").text('New_Text').trigger('change');
+  //       return ;
+  //     }  
+  // $("#cluster").find("option:selected").text('New_Text').trigger('change');
+  // console.log('trigger from ui');
+  
+});
 $('input[name="check"]').on('change', function(e) {
   var value = $('input[name="check"]:checked').val();
   var formData = new FormData();
@@ -53,6 +88,27 @@ $('input[name="check"]').on('change', function(e) {
       }
       $("#cluster").select2();
 
+
+
+
+
+      // 2023/1/11
+      // $("#cluster").select2().select2('destroy');
+      // $('#cluster option[value="2"]').val('10').trigger('change');
+      // $('#cluster option[value="2"]').val('10');
+      // $('#cluster option[value="2"]').text('10');
+      // $("#select_id").find("option[value='2']").text('New_Text');
+      // var select = $("#cluster").select2();
+      // select.select2('destroy');          
+      //   $("#cluster").find("option:selected").text('New_Text');
+      //   console.log($("#cluster").find("option:selected"));
+      //   select.select2();
+
+      // $('#cluster').trigger('change');
+      // $("#cluster").select2().trigger('change');
+      // $("#cluster").select2().select2();
+      
+
     },
     error: function (jqXHR, textStatus, errorThrown) {
         console.log(jqXHR);
@@ -71,6 +127,26 @@ $('input[name="check"]').on('change', function(e) {
 
 
     $("#cluster").select2();
+
+
+
+
+
+
+
+
+
+    // 2023/1/11
+    var select = $("#select_id").select2();
+$('#select_id').select2();
+ 
+$('#referecedField').on('click', function() {
+      
+      select.select2('destroy');          
+
+        $("#select_id").find("option:selected").text('New_Text');
+        select.select2();
+ });
 </script>
 <?php
 $dbconnect = "mysql:host=localhost;dbname=test_tmp_tbl;port=8889";

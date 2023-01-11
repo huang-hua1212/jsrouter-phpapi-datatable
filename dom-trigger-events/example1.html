@@ -1,0 +1,38 @@
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <script
+    src="https://code.jquery.com/jquery-2.2.4.min.js"
+    integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+    crossorigin="anonymous"></script>
+    <title>
+    </title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+  </head>
+  <body>
+<section>
+    <select id = 'selector'>
+<option value='1'>1111111</option>
+<option value='2'>2222222</option>
+<option value='3'>3333333</option>
+<option value='4'>4444444</option>
+
+
+    </select>
+    
+</section>
+</body>
+<script>
+    $('#selector').on('change', function() {
+        console.log($("select option[value='1']").html());
+        // $('select option[value="1"]').val('11');
+        // $('select option[value="1"]').text('11').trigger('change');
+        // $('select option[value="1"]').html('11').trigger('change');
+        // document.getElementsByTagName('select')[0].options[0].innerHTML = ;
+        console.log( document.querySelectorAll('select > option[value="1"]')[0].text);
+        document.querySelectorAll('select > option[value="1"]')[0].text = '11';
+
+    })
+</script>
