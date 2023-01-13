@@ -8,7 +8,9 @@ include 'src/Steampixel/Route.php';
 
 // Define a global basepath
 // define('BASEPATH','/');
-define('BASEPATH','/MAMP/projects/simplePHPRouter/router.php/');
+// define('BASEPATH','/MAMP/projects/simplePHPRouter/router.php/');
+define('BASEPATH','/MAMP/projects/jsrouter-phpapi-datatable/router.php/');
+
 
 
 // If your script lives in a subfolder you can use the following example
@@ -267,72 +269,144 @@ Route::add('/mysql/data1', function() {
 
 
 
-  // mysqli version1
-  $user = 'root';
-  $password = 'root';
-  $db = 'test_db';
-  $host = 'localhost';
-  $port = 8889;
-  $link = mysqli_init();
-  $success = mysqli_real_connect(
-     $link,
-     $host,
-     $user,
-     $password,
-     $db,
-     $port
-  );
-  $query = "SELECT * from course";
-
-  $allCount = countAllTableDataRows($link, $query);
-  // print($_POST['length']);
-  if($_POST['length'] != -1)
-  {
-    $query .= ' LIMIT ' . $_POST['start'] . ', ' . $_POST['length'];
-  }
-  
-
-  try{
-
-    $res = mysqli_query( $link , $query);
-    // if (!mysqli_query($link, $sql)) {
-    //   die('Error: ' . mysqli_error($link));
-    // }
-    $rows = mysqli_fetch_all($res,MYSQLI_ASSOC);
-    $n = 0;
-    
-    foreach($rows as &$row) {
-      $row['id'] = $n;
-      $n++;
-    }
-
-    $res = array(
-      "draw"		=>	intval($_POST["draw"]),
-      "recordsTotal"	=>	$allCount,
-      "recordsFiltered"	=>	$allCount, // 每次表現幾行
-      'data'=> $rows,
-    );
-
-
-
-    // echo json_encode($rows);
-    echo json_encode($res);
-
-  }catch (Exception $e) {
-    print($e);
-  }
+  // mysqli_real_connect version1 fetch_all(MYSQL_ASSOC)+DATA_TABLE
+  // $user = 'root';
+  // $password = 'root';
+  // $db = 'test_db';
+  // $host = 'localhost';
+  // $port = 8889;
+  // $link = mysqli_init();
+  // $success = mysqli_real_connect(
+  //    $link,
+  //    $host,
+  //    $user,
+  //    $password,
+  //    $db,
+  //    $port
+  // );
+  // $query = "SELECT * from course";
+  // $allCount = countAllTableDataRows($link, $query);
+  // // print($_POST['length']);
+  // if($_POST['length'] != -1)
+  // {
+  //   $query .= ' LIMIT ' . $_POST['start'] . ', ' . $_POST['length'];
+  // }
+  // try{
+  //   $res = mysqli_query( $link , $query);
+  //   // if (!mysqli_query($link, $sql)) {
+  //   //   die('Error: ' . mysqli_error($link));
+  //   // }
+  //   $rows = mysqli_fetch_all($res,MYSQLI_ASSOC);
+  //   $n = 0;
+  //   foreach($rows as &$row) {
+  //     $row['id'] = $n;
+  //     $n++;
+  //   }
+  //   $res = array(
+  //     "draw"		=>	intval($_POST["draw"]),
+  //     "recordsTotal"	=>	$allCount,
+  //     "recordsFiltered"	=>	$allCount, // 每次表現幾行
+  //     'data'=> $rows,
+  //   );
+  //   // echo json_encode($rows);
+  //   echo json_encode($res);
+  // }catch (Exception $e) {
+  //   print($e);
+  // }
   
 
 
+  // mysqli_real_connect version2 fetch_all($res, MYSQLI_ASSOC)
+  // $user = 'root';
+  // $password = 'root';
+  // $db = 'test_db';
+  // $host = 'localhost';
+  // $port = 8889;
+  // $link = mysqli_init();
+  // $success = mysqli_real_connect(
+  //    $link,
+  //    $host,
+  //    $user,
+  //    $password,
+  //    $db,
+  //    $port
+  // );
+  // $query = "SELECT * from course";
+  // try{
+  //   $res = mysqli_query( $link , $query);
+  //   // if (!mysqli_query($link, $sql)) {
+  //   //   die('Error: ' . mysqli_error($link));
+  //   // }
+  //   // $rows = array();
+  //   $rows = mysqli_fetch_all($res,MYSQLI_ASSOC);
+  //   echo json_encode($rows);
+  // }catch (Exception $e) {
+  //   print($e);
+  // }
 
-  // $connection = mysqli_connet($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME, $DB_NAME, $DB_PORT);
-  // $query = 'SELECT * from course';
-  // // $result = mysqli_query($connection, $query);
-  // // $data = mysqli_fetch_array($result);
-  // // var_dump($data);
-  // $result = $mysqli -> query($sql);
-  // $result -> fetch_all(MYSQLI_ASSOC);
-  // print_r($result);
+
+
+  // mysqli_real_connect version3 fetch_assoc($res)
+  // $user = 'root';
+  // $password = 'root';
+  // $db = 'test_db';
+  // $host = 'localhost';
+  // $port = 8889;
+  // $link = mysqli_init();
+  // $success = mysqli_real_connect(
+  //    $link,
+  //    $host,
+  //    $user,
+  //    $password,
+  //    $db,
+  //    $port
+  // );
+  // $query = "SELECT * from course";
+  // try{
+  //   $res = mysqli_query( $link , $query);
+  //   // if (!mysqli_query($link, $sql)) {
+  //   //   die('Error: ' . mysqli_error($link));
+  //   // }
+  //   $rows = array();
+  //   while($row = mysqli_fetch_assoc($res)) {
+  //     // print_r($row);
+  //     $rows[] = $row;
+  //   }
+  //   echo json_encode($rows);
+  // }catch (Exception $e) {
+  //   print($e);
+  // }
+
+
+
+
+  // new mysqli version4 $rs->fetch_all(MYSWL_ALL)
+  // $dbconnect = "mysql:host=localhost;dbname=test_tmp_tbl;port=8889";
+  // $conn =  new mysqli('localhost', 'root', 'root','test_db', '8889');
+  // $query = "SELECT * FROM course ";
+  // $rs = $conn->query($query);
+  // $rows = $rs-> fetch_all(MYSQLI_ASSOC);
+  // // fetch_assoc() //適合一個一個取
+  // // $rows = array();
+  // // while($row = $rs-> fetch_assoc()){
+  // //   $rows[] = $row;
+  // // }  
+  // echo json_encode($rows);  
+
+
+
+   // new mysqli version5 $rs->fetch_assoc()
+   $dbconnect = "mysql:host=localhost;dbname=test_tmp_tbl;port=8889";
+   $conn =  new mysqli('localhost', 'root', 'root','test_db', '8889');
+   $query = "SELECT * FROM course ";
+   $rs = $conn->query($query);
+   //fetch_assoc() //適合一個一個取
+   $rows = array();
+   while($row = $rs-> fetch_assoc()){
+     $rows[] = $row;
+   }  
+   echo json_encode($rows);  
+
  
 }, ['get','post']);
 
