@@ -426,7 +426,7 @@ Route::add('/upload-single-image', function() {
 Route::add('/export-single-excel', function() {
   $exportExcelData = ['article-1' => ['Article 1'], 'article-2' => ['Article 2'], 'article-3' => ['Article 3'], 
   'article-4' => ['Article 4'], 'article-5' => ['Article 5']];
-  exportExcel('./test.xlsx', ['a'],  $exportExcelData);
+  makeExportExcel('test.xlsx', ['a'],  $exportExcelData);
 }, ['get','post']);
 
 
@@ -475,7 +475,7 @@ function SaveBase64ToJpeg($base64_string, $output_file) {
 }
 
 
-function exportExcel($excelFileName, $title, $data) {
+function makeExportExcel($excelFileName, $title, $data) {
     $str = "<html xmlns:o=\"urn:schemas-microsoft-com:office:office\"\r\nxmlns:x=\"urn:schemas-microsoft-com:office:excel\"\r\nxmlns=\"http://www.w3.org/TR/REC-html40\">\r\n<head>\r\n<meta http-equiv=Content-Type content=\"text/html; charset=utf-8\">\r\n</head>\r\n<body>";
     $str .="<table border=1 align=center cellpadding=0 cellspacing=0>";
     // 拼接標題行
