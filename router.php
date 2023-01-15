@@ -244,9 +244,6 @@ Route::add('/known-routes', function() {
 
 
 Route::add('/mysql/data1', function() {
-
-
-  
   //// PDO WITH MYSQL version1
   // $dbconnect = "mysql:host=localhost;dbname=test_db;port=8889";
   // $connect = new PDO($dbconnect, 'root', 'root');
@@ -412,12 +409,122 @@ Route::add('/mysql/data1', function() {
 
 
 
+Route::add('/mysql/ajax-formdata-test', function() {
+  // echo json_encode(array());
+  echo json_encode($_POST);
+}, ['get','post']);
+
+
+Route::add('/upload-single-image', function() {
+   // echo json_encode($_FILES); 
+  // echo json_encode($_FILES['fileInfo']); //  file info
+  SaveBase64ToJpeg($_POST['base64'], './media/images/sample.png');
+  echo json_encode($_POST['base64']); // BASE64
+}, ['get','post']);
+
+
+Route::add('/export-single-excel', function() {
+  $exportExcelData = ['article-1' => ['Article 1'], 'article-2' => ['Article 2'], 'article-3' => ['Article 3'], 
+  'article-4' => ['Article 4'], 'article-5' => ['Article 5']];
+  exportExcel('./test.xlsx', ['a'],  $exportExcelData);
+}, ['get','post']);
+
+
+Route::add('/upload-single-excel', function() {
+  SaveBase64ToJpeg($_POST['base64'], './media/excel/csv/sample.csv');
+  echo json_encode($_POST['base64']); // BASE64
+
+}, ['get','post']);
+
+
+
+Route::add('/read-single-excel', function() {
+  // csvToArray("./media/excel/csv/sample.csv");
+  echo json_encode(csvToArray("./media/excel/csv/sample.csv"));
+}, ['get','post']);
+
+
+
+
+
+
+
 function countAllTableDataRows($link, $query) {
   $res = mysqli_query( $link , $query);
   $rows = mysqli_fetch_all($res,MYSQLI_ASSOC);
   $count = count($rows); 
   return $count;
 
+}
+
+function SaveBase64ToJpeg($base64_string, $output_file) {
+  // open the output file for writing
+  $ifp = fopen( $output_file, 'wb' ); 
+
+  // split the string on commas
+  // $data[ 0 ] == "data:image/png;base64"
+  // $data[ 1 ] == <actual base64 string>
+  $data = explode( ',', $base64_string );
+
+  // we could add validation here with ensuring count( $data ) > 1
+  fwrite( $ifp, base64_decode( $data[ 1 ] ) );
+
+  // clean up the file resource
+  fclose( $ifp ); 
+  return $output_file; 
+}
+
+
+function exportExcel($excelFileName, $title, $data) {
+    $str = "<html xmlns:o=\"urn:schemas-microsoft-com:office:office\"\r\nxmlns:x=\"urn:schemas-microsoft-com:office:excel\"\r\nxmlns=\"http://www.w3.org/TR/REC-html40\">\r\n<head>\r\n<meta http-equiv=Content-Type content=\"text/html; charset=utf-8\">\r\n</head>\r\n<body>";
+    $str .="<table border=1 align=center cellpadding=0 cellspacing=0>";
+    // 拼接標題行
+    $str .= '<tr style="height:25px;font-size:13px;font-weight: bold;">';
+    foreach ($title as $key => $val) {
+        $str .= '<td>'.$val.'</td>';
+    }
+    $str .= '</tr>';
+    // 拼接資料
+    foreach ($data as $key => $val) {
+        $str .= '<tr style="text-align: left;height:25px;font-size:13px;">';
+        foreach ($val as $v) {
+            if (is_numeric($v) && $v > 100000000) {
+                $str .= "<td style='vnd.ms-excel.numberformat:@'>".$v."</td>";
+            } elseif (is_numeric($v) && preg_match('/^[0-9]+(\.[0-9]{2})+$/', $v)) {
+                // 是兩位小數的保留2位顯示
+                $str .= "<td style='vnd.ms-excel.numberformat:0.00'>".$v."</td>";
+            } elseif (preg_match('/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1]) (0[0-9]|1[0-9]|2[0-4]):(0[0-9]|[1-5][0-9]):(0[0-9]|[1-5][0-9])$/', $v)) {
+                // 是日期
+                $str .= "<td style='vnd.ms-excel.numberformat:yyyy-mm-dd\ hh\:mm\:ss'>".$v."</td>";
+            } else {
+                $str .= "<td>".$v."</td>";
+            }
+        }
+        $str .= "</tr>\n";
+    }
+    $str .= "</table></body></html>";
+    // 實現檔案下載
+    header("Content-Type: application/vnd.ms-excel; name='excel'");
+    header("Content-type: application/octet-stream");
+    header("Content-Disposition: attachment; filename=" . $excelFileName);
+    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+    header("Pragma: no-cache");
+    header("Expires: 0");
+    // exit($str);
+    echo $str;
+
+}
+
+
+
+function csvToArray($importPath) {
+  $handle=fopen($importPath,"r");
+  $data = array();
+  while($row = fgetcsv($handle,10000,",")) {
+    $data[] = $row;
+    // print_r($row);
+  }
+  return $data;
 }
 
 

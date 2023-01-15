@@ -21,43 +21,15 @@
 </head>
 <body>
 <div id='app'></div>
-<!-- template TESTing -->
-<template-test></template-test>
 
+<br>
+<br>
+<div class="container">
+</div>
 </body>
 <script type = 'module'>
-  // import RoutingRouter from '../lib/router/history-routing.js';
-  import RoutingRouter from './lib/router/history-routing.js';
-  
-  window.customElements.define('template-test', RoutingRouter);
-
- 
-  // $.ajax({
-  //       url: 'http://localhost:8888/MAMP/projects/simplePHPRouter/router.php/mysql/data1',            
-  //       success: function (data) {
-  //         // console.log(typeof data);
-
-  //         console.log(data);
-  //         // console.log(JSON.parse(data)[0]);
-  //         // alert(data);
-  //       },
-  //       error: function (jqXHR, textStatus, errorThrown) {
-  //         console.log(jqXHR);
-  //           /*弹出jqXHR对象的信息*/
-  //           // alert(jqXHR.responseText);
-  //           // alert(jqXHR.status);
-  //           // alert(jqXHR.readyState);
-  //           // alert(jqXHR.statusText);
-  //           // /*弹出其他两个参数的信息*/
-  //           // alert(textStatus);
-  //           // alert(errorThrown);
-  //       }
-  //   });
-
-  
+    window.location  = 'http://localhost:8888/MAMP/projects/jsrouter-phpapi-datatable/router.php/export-single-excel';
 
 
-
-  
 </script>
 </html>

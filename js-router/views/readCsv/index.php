@@ -20,44 +20,29 @@
   </title>
 </head>
 <body>
-<div id='app'></div>
-<!-- template TESTing -->
-<template-test></template-test>
-
 </body>
 <script type = 'module'>
-  // import RoutingRouter from '../lib/router/history-routing.js';
-  import RoutingRouter from './lib/router/history-routing.js';
-  
-  window.customElements.define('template-test', RoutingRouter);
+     $.ajax({
+            url: 'http://localhost:8888/MAMP/projects/jsrouter-phpapi-datatable/router.php/read-single-excel',
+            async: true,
+            method: 'GET', 
+            cache: false,
+            success: function (res) {
+              var data = JSON.parse(res);
+              console.log(data[0]);
 
- 
-  // $.ajax({
-  //       url: 'http://localhost:8888/MAMP/projects/simplePHPRouter/router.php/mysql/data1',            
-  //       success: function (data) {
-  //         // console.log(typeof data);
-
-  //         console.log(data);
-  //         // console.log(JSON.parse(data)[0]);
-  //         // alert(data);
-  //       },
-  //       error: function (jqXHR, textStatus, errorThrown) {
-  //         console.log(jqXHR);
-  //           /*弹出jqXHR对象的信息*/
-  //           // alert(jqXHR.responseText);
-  //           // alert(jqXHR.status);
-  //           // alert(jqXHR.readyState);
-  //           // alert(jqXHR.statusText);
-  //           // /*弹出其他两个参数的信息*/
-  //           // alert(textStatus);
-  //           // alert(errorThrown);
-  //       }
-  //   });
-
-  
-
-
-
-  
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+              console.log(jqXHR);
+                /*弹出jqXHR对象的信息*/
+                // alert(jqXHR.responseText);
+                // alert(jqXHR.status);
+                // alert(jqXHR.readyState);
+                // alert(jqXHR.statusText);
+                // /*弹出其他两个参数的信息*/
+                // alert(textStatus);
+                // alert(errorThrown);
+            }
+          });
 </script>
 </html>
