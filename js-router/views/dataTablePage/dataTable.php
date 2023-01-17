@@ -15,6 +15,14 @@
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 		<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
 		<script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+    <!-- datatable export button -->
+    <script src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
+    <script src="http://cdn.datatables.net/buttons/2.0.1/js/buttons.bootstrap4.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+   <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script> 
+
+
+
 		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" />
   <title>
   </title>
@@ -22,11 +30,10 @@
 <body>
 <div id='app'></div>
 <!-- template TESTing -->
-<template-test></template-test>
 
 <br>
 <br>
-<div class="container">
+<div class="container first">
 			<br />
 			<h1 align="center" class="text-primary"><b>jQuery DataTable Jump to a Specific Page with PHP Ajax</b></h1>
 			<br />
@@ -74,33 +81,6 @@
     <br>
 </body>
 <script type = 'module'>
-  // $.ajax({
-  //       url: 'http://localhost:8888/MAMP/projects/simplePHPRouter/router.php/mysql/data1',            
-  //       success: function (data) {
-  //         // console.log(typeof data);
-
-  //         console.log(data);
-  //         // console.log(JSON.parse(data)[0]);
-  //         // alert(data);
-  //       },
-  //       error: function (jqXHR, textStatus, errorThrown) {
-  //         console.log(jqXHR);
-  //           /*弹出jqXHR对象的信息*/
-  //           // alert(jqXHR.responseText);
-  //           // alert(jqXHR.status);
-  //           // alert(jqXHR.readyState);
-  //           // alert(jqXHR.statusText);
-  //           // /*弹出其他两个参数的信息*/
-  //           // alert(textStatus);
-  //           // alert(errorThrown);
-  //       }
-  //   });
-
-  
-
-
-
-  
   function load_data(start, length)
   {
 		  var dataTable = $('#customer_table').DataTable({
@@ -108,6 +88,7 @@
         serverSide : true,
         order : [],
         retrieve: true,
+        destroy: true,
         ajax : {
           url:"http://localhost:8888/MAMP/projects/simplePHPRouter/router.php/mysql/data1",
           method:"POST",
@@ -142,6 +123,17 @@
                     return '<input type="checkbox" name="checklist" />'
                 }
             }],
+        dom: 'lBfrtip',
+        buttons: [
+          {
+            extend:'excelHtml5',
+            autoFileter: true,
+            sheetName: 'Export data',
+            exportOptions: {
+              columns: [0, 1, 2, 3, 4],
+            }
+          }
+        ],
         drawCallback : function(settings){
           var page_info = dataTable.page.info();
 
@@ -199,3 +191,10 @@
   
 </script>
 </html>
+
+
+
+
+
+
+

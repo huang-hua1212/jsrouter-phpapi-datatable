@@ -28,10 +28,7 @@
 </div>
 </body>
 <script type = 'module'>
-    // window.location  = 'http://localhost:8888/MAMP/projects/jsrouter-phpapi-datatable/router.php/export-single-excel-version1';
-    window.location  = 'http://localhost:8888/MAMP/projects/jsrouter-phpapi-datatable/router.php/export-single-excel-version2';
-
-
+    window.location  = 'http://localhost:8888/MAMP/projects/jsrouter-phpapi-datatable/router.php/export-excel-from-mysql';
 
 </script>
 </html>

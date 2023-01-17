@@ -423,11 +423,27 @@ Route::add('/upload-single-image', function() {
 }, ['get','post']);
 
 
-Route::add('/export-single-excel', function() {
+Route::add('/export-single-excel-version1', function() {
   $exportExcelData = ['article-1' => ['Article 1'], 'article-2' => ['Article 2'], 'article-3' => ['Article 3'], 
   'article-4' => ['Article 4'], 'article-5' => ['Article 5']];
-  makeExportExcel('test.xlsx', ['a'],  $exportExcelData);
+  makeExportExcelV1('test.xlsx', ['a'],  $exportExcelData);
 }, ['get','post']);
+
+
+
+Route::add('/export-single-excel-version2', function() {
+  $exportExcelData = ['article-1' => ['Article 1'], 'article-2' => ['Article 2'], 'article-3' => ['Article 3'], 
+  'article-4' => ['Article 4'], 'article-5' => ['Article 5']];
+  makeExportExcelV2($exportExcelData);
+}, ['get','post']);
+
+
+
+Route::add('/export-excel-from-mysql', function() {
+  
+  makeExportExcelFromMysql();
+}, ['get','post']);
+
 
 
 Route::add('/upload-single-excel', function() {
@@ -452,7 +468,9 @@ Route::add('/read-single-docx', function() {
 }, ['get','post']);
 
 
-
+Route::add('/export-single-csv', function() {
+  makeCsv();
+}, ['get','post']);
 
 
 
@@ -483,9 +501,14 @@ function SaveBase64ToJpeg($base64_string, $output_file) {
 }
 
 
-function makeExportExcel($excelFileName, $title, $data) {
-    $str = "<html xmlns:o=\"urn:schemas-microsoft-com:office:office\"\r\nxmlns:x=\"urn:schemas-microsoft-com:office:excel\"\r\nxmlns=\"http://www.w3.org/TR/REC-html40\">\r\n<head>\r\n<meta http-equiv=Content-Type content=\"text/html; charset=utf-8\">\r\n</head>\r\n<body>";
-    $str .="<table border=1 align=center cellpadding=0 cellspacing=0>";
+function makeExportExcelV1($excelFileName, $title, $data) {
+    $str = '<html xmlns:o="urn:schemas-microsoft-com:office:office"
+    xmlns:x="urn:schemas-microsoft-com:office:excel">
+    <head>
+    <meta http-equiv=Content-Type content="text/html; charset=utf-8">
+    </head>
+    <body>';
+    $str .='<table border=1 align=center cellpadding=0 cellspacing=0>';
     // 拼接標題行
     $str .= '<tr style="height:25px;font-size:13px;font-weight: bold;">';
     foreach ($title as $key => $val) {
@@ -518,9 +541,92 @@ function makeExportExcel($excelFileName, $title, $data) {
     header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
     header("Pragma: no-cache");
     header("Expires: 0");
-    // exit($str);
     echo $str;
 
+}
+
+function makeExportExcelV2($data) {
+  $output .= '
+   <table class="table" border="1">  
+                    <tr>  
+                         <th>A</th>  
+                    </tr>
+  ';
+  foreach($data as $value){
+    foreach($value as $val){
+      $output .= '
+        <tr>  
+              <td>'. $val.'</td>  
+        </tr>
+      ';
+    }
+  }
+  $output .= '</table>';
+  header('Content-Type: application/xls');
+  header('Content-Disposition: attachment; filename=download.xls');
+  echo $output;
+
+}
+
+
+function makeExportExcelFromMysql() {
+   // new mysqli version5 $rs->fetch_assoc()
+   $dbconnect = "mysql:host=localhost;dbname=test_tmp_tbl;port=8889";
+   $conn =  new mysqli('localhost', 'root', 'root','test_db', '8889');
+   $query = "SELECT * FROM course ";
+   $rs = $conn->query($query);
+   //fetch_assoc() //適合一個一個取
+   $rows = array();
+   while($row = $rs-> fetch_assoc()){
+     $rows[] = $row;
+   }  
+
+
+  $output .= '
+   <table class="table" border="1">  
+                    <tr>  
+                         <th>A</th>  
+                    </tr>
+  ';
+  foreach( $rows as $key=>$val)
+  {
+   $output .= '<tr> ';
+   foreach($val as $v){
+    $output .= ' <td>'. $v.'</td> ';
+   }
+   $output .= '</tr> '; 
+  }
+  $output .= '</table>';
+  header('Content-Type: application/xls');
+  header('Content-Disposition: attachment; filename=download.xls');
+  echo $output;
+
+}
+
+
+function makeCsv() {
+  header('Content-Type: text/csv; charset=utf-8');
+ 
+	header('Content-Disposition: attachment; filename=DevelopersData.csv');
+	
+
+  // new mysqli version5 $rs->fetch_assoc()
+  $dbconnect = "mysql:host=localhost;dbname=test_tmp_tbl;port=8889";
+  $conn =  new mysqli('localhost', 'root', 'root','test_db', '8889');
+  $query = "SELECT * FROM course ";
+  $rs = $conn->query($query);
+  $output = fopen("php://output", "w");
+  fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF));
+
+	fputcsv($output, array('Id','Name','Skills','Address', 'Designation'));
+  //fetch_assoc() //適合一個一個取
+  $rows = array();
+  while($row = $rs-> fetch_assoc()){
+    $rows[] = $row;
+    fputcsv($output, $row);
+  }  
+
+	fclose($output);
 }
 
 
@@ -563,6 +669,11 @@ function readDocx($filename){
 
     return $striped_content;
 }
+
+
+
+
+
 
 
 // Run the Router with the given Basepath

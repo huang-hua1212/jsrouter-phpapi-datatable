@@ -28,9 +28,26 @@
 </div>
 </body>
 <script type = 'module'>
-    // window.location  = 'http://localhost:8888/MAMP/projects/jsrouter-phpapi-datatable/router.php/export-single-excel-version1';
-    window.location  = 'http://localhost:8888/MAMP/projects/jsrouter-phpapi-datatable/router.php/export-single-excel-version2';
-
+    // $.ajax({
+    //     url: 'http://localhost:8888/MAMP/projects/jsrouter-phpapi-datatable/router.php/export-single-csv',           
+    //     method: 'GET', 
+    //     success: function (data) {
+    //       console.log(data);
+    //     },
+    //     error: function (jqXHR, textStatus, errorThrown) {
+    //     //   console.log(jqXHR);
+    //       console.log(jqXHR.responseText);
+    //         /*弹出jqXHR对象的信息*/
+    //         // alert(jqXHR.responseText);
+    //         // alert(jqXHR.status);
+    //         // alert(jqXHR.readyState);
+    //         // alert(jqXHR.statusText);
+    //         // /*弹出其他两个参数的信息*/
+    //         // alert(textStatus);
+    //         // alert(errorThrown);
+    //     }
+    // });
+    window.location = 'http://localhost:8888/MAMP/projects/jsrouter-phpapi-datatable/router.php/export-single-csv';
 
 
 </script>
