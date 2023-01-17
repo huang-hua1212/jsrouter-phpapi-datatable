@@ -606,7 +606,6 @@ function makeExportExcelFromMysql() {
 
 function makeCsv() {
   header('Content-Type: text/csv; charset=utf-8');
- 
 	header('Content-Disposition: attachment; filename=DevelopersData.csv');
 	
 
@@ -616,6 +615,7 @@ function makeCsv() {
   $query = "SELECT * FROM course ";
   $rs = $conn->query($query);
   $output = fopen("php://output", "w");
+  // $output = fopen("./media/excel/csv/output.csv", "w");
   fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF));
 
 	fputcsv($output, array('Id','Name','Skills','Address', 'Designation'));
