@@ -79,21 +79,25 @@
 		</div>
     <br>
     <br>
-</body>
+
+
+    <!-- <button onClick = 'btn()'>123</button> -->
+  </body>
 <script type = 'module'>
+  var dataTable ;
   function load_data(start, length)
   {
-		  var dataTable = $('#customer_table').DataTable({
+		  dataTable = $('#customer_table').DataTable({
         processing : true,
         serverSide : true,
         order : [],
         retrieve: true,
         destroy: true,
         ajax : {
-          url:"http://localhost:8888/MAMP/projects/simplePHPRouter/router.php/mysql/data1",
+          url:"http://localhost:8888/MAMP/projects/jsrouter-phpapi-datatable/router.php/mysql/datatable",
           method:"POST",
           data:{start:start, length:length},
-          // 除錯用，若為了datatable正常顯示，需註解起來
+          // // 除錯用，若為了datatable正常顯示，需註解起來
           // success: function (response) {
           //   //這邊放 
           //   console.log(response);
@@ -162,7 +166,13 @@
        
         
       });
+      
 	}
+  
+  // window.btn = function()  {
+  //   console.log(123);
+  //   dataTable.column(2).search('2' ,true, false, false).draw(false);
+  // }
 
 	load_data();
 
