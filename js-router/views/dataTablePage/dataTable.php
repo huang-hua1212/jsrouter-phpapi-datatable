@@ -22,8 +22,12 @@
    <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script> 
 
 
-
 		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" />
+    <!-- Popper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
   <title>
   </title>
 </head>
@@ -82,11 +86,48 @@
 
 
     <!-- <button onClick = 'btn()'>123</button> -->
+    <div class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Modal body text goes here.</p>
+            <label>CourseID: </label>
+            <text class = 'courseid_text'></text>
+            <br>
+            <label>Credits</label>
+            <input type = 'text' class = 'credits-edit' name = 'credits-name' value='123'>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="save btn btn-primary" onclick = 'save()'>Save changes</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
+
+
+
+
+
+
+
+
+
 <script type = 'module'>
   var dataTable ;
+  var globalData;
   function load_data(start, length)
   {
+    console.log(start);
+    console.log(length);
+
 		  dataTable = $('#customer_table').DataTable({
         processing : true,
         serverSide : true,
@@ -97,6 +138,11 @@
           url:"http://localhost:8888/MAMP/projects/jsrouter-phpapi-datatable/router.php/mysql/datatable",
           method:"POST",
           data:{start:start, length:length},
+          dataSrc: function(json) {
+            console.log(json);
+            globalData = json.data;
+            return json.data;
+          },
           // // 除錯用，若為了datatable正常顯示，需註解起來
           // success: function (response) {
           //   //這邊放 
@@ -138,7 +184,12 @@
             }
           }
         ],
+        
+        rowCallback: function( row, data ) {
+          // console.log(data);
+        },
         drawCallback : function(settings){
+          console.log(settings);
           var page_info = dataTable.page.info();
 
           $('#totalpages').text(page_info.pages);
@@ -195,10 +246,62 @@
 
   // click function需用window.[func] 定義
   window.triggerModal = function (courseId) {
-    console.log(courseId);
+    $('.courseid_text').html(courseId);
+    const currentObj = globalData.filter(it => 
+      it.CourseID == courseId);
+    $('input[name="credits-name"]').val(currentObj[0].Credits) ;
+    $('.modal').modal('toggle');
   }
 
-  
+  window.save = function(e) {
+    var formData = new FormData();
+    formData.append('courseId', $('.courseid_text').html());
+    formData.append('credits', $('input[name="credits-name"]').val());
+
+    $.ajax({
+        url: 'http://localhost:8888/MAMP/projects/jsrouter-phpapi-datatable/router.php/datatable_delete',           
+        async: true,
+        method: 'POST', 
+        data: formData,
+        cache: false,
+        processData: false, // needed
+        contentType: false, // needed
+        success: function (data) {
+          console.log(data);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+        //   console.log(jqXHR);
+          console.log(jqXHR.responseText);
+            /*弹出jqXHR对象的信息*/
+            // alert(jqXHR.responseText);
+            // alert(jqXHR.status);
+            // alert(jqXHR.readyState);
+            // alert(jqXHR.statusText);
+            // /*弹出其他两个参数的信息*/
+            // alert(textStatus);
+            // alert(errorThrown);
+        }
+    });
+
+
+
+
+    $('.modal').modal('hide');
+
+    // page-reload-after-edit-keep-page-position
+    dataTable.ajax.reload(null, false);
+    //  change page: success
+    // dataTable.ajax.reload();
+    // dataTable.page( 2 ).draw( 'page' ); // 第三頁
+
+
+
+
+
+
+
+
+  }
 </script>
 </html>
 

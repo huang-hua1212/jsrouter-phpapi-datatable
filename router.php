@@ -617,6 +617,17 @@ Route::add('/call_insert_update_procedure', function() {
 
 
 
+Route::add('/datatable_delete', function() {
+  $dbconnect = "mysql:host=localhost;dbname=test_tmp_tbl;port=8889";
+  $conn =  new mysqli('localhost', 'root', 'root','test_db', '8889');
+  $sql = 'update course set credits = "'.$_POST['credits'].'" where courseid="'.$_POST['courseId'].'"';
+  $rs = $conn->query($sql);
+}, ['get','post']);
+
+
+
+
+
 function countAllTableDataRows($link, $query) {
   $res = mysqli_query( $link , $query);
   $rows = mysqli_fetch_all($res,MYSQLI_ASSOC);
