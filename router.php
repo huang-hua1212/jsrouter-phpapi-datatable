@@ -602,6 +602,25 @@ Route::add('/test__', function() {
 
 
 Route::add('/call_insert_update_procedure', function() {
+  // call course_insert_update_procedure(parameter1, parameter2......)
+  /**
+   *
+    DROP PROCEDURE IF EXISTS `course_insert_update_procedure`;
+    DELIMITER //
+    CREATE PROCEDURE course_insert_update_procedure(var1 varchar(50),	var2 INT(10), var3 INT(10), var4 INT(10))
+    BEGIN
+    IF not EXISTS (SELECT * FROM course WHERE title = var1) then
+      INSERT INTO course (CourseID, title, credits, DepartmentID, CreatedON) 
+        SELECT 900, x.title, x.credits, x.DepartmentID, x.createdon
+        FROM (SELECT var1 as title, var2 as credits, var3 as DepartmentID,  var4 as createdon
+            ) as x;
+    ELSE
+        UPDATE `course`
+        SET  CourseID = 900,title= var1, credits= var2, DepartmentID = var3, CreatedON = var4 
+        WHERe title = var1;
+    end if;
+    END
+   */
   $dbconnect = "mysql:host=localhost;dbname=test_tmp_tbl;port=8889";
   $conn =  new mysqli('localhost', 'root', 'root','test_db', '8889');
   $insertArray = [];
@@ -622,6 +641,56 @@ Route::add('/datatable_delete', function() {
   $conn =  new mysqli('localhost', 'root', 'root','test_db', '8889');
   $sql = 'update course set credits = "'.$_POST['credits'].'" where courseid="'.$_POST['courseId'].'"';
   $rs = $conn->query($sql);
+}, ['get','post']);
+
+
+
+
+Route::add('/call_course_procedure_1', function() {
+  // course_procedure_1()
+  /**
+      DROP PROCEDURE IF EXISTS `course_procedure_1`;
+      DELIMITER //
+      CREATE PROCEDURE `course_procedure_1`()
+      BEGIN
+
+      ALTER TABLE course_1 ENGINE = InnoDB;
+      ALTER TABLE course ENGINE = InnoDB;
+
+
+      start TRANSACTION;
+      insert into course_1(CourseID, Title, Credits, DepartmentID, CreatedON)
+      values(900, 'cccc', 0, 0, 0);
+      insert into course(CourseID, Title, Credits, DepartmentID, CreatedON)
+      values(900, 'cccc', 'cccc', 0, 0);
+
+
+      commit;
+      ALTER TABLE course_1 ENGINE = MyISAM;
+      ALTER TABLE course ENGINE = MyISAM;
+
+      END//
+      DELIMITER ;
+   */
+  $dbconnect = "mysql:host=localhost;dbname=test_tmp_tbl;port=8889";
+  $conn =  new mysqli('localhost', 'root', 'root','test_db', '8889');
+  $sql = 'call course_procedure_1();';
+  $rs = $conn->query($sql);
+  if($rs == false) {
+    print('失敗!!');
+    $sqlc = 'ALTER TABLE course_1 ENGINE = MyISAM';
+    $rs = $conn->query($sqlc);
+    if($rs) {
+      print('成功!!');
+    }
+    $sqlc = 'ALTER TABLE course ENGINE = MyISAM';
+    $rs = $conn->query($sqlc);
+    if($rs) {
+      print('成功!!');
+    }
+  } else {
+    print('成功!!!');
+  }
 }, ['get','post']);
 
 
